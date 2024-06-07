@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::-webkit-scrollbar{
+    width: 7px;
+}
+
+::-webkit-scrollbar-thumb{
+    background-color: gray;
+}
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none; /* WebKit/Blink */
+    margin: 0; /* Remove margin */
+  }
+
+.active {
+    color: gray;
+}
+
+.footer{
+    box-shadow: -2px -2px 20px rgba(0, 0, 0, 0.2);
+}

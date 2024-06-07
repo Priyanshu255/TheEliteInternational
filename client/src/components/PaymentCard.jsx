@@ -1,0 +1,109 @@
+import axios from "axios";
+import React from "react";
+import { CiCircleCheck } from "react-icons/ci";
+import { useNavigate } from "react-router-dom";
+
+// I have a minor project for my collage, it is a mern application which has jwt authentication, email otp verification and razorpay integration for payments. It has two actors users and admins. About the website- it is a forex trading insight giving website, which is based on subscription model, once the user purchase the subscription then it will be added to a telegram group for the given period of time.
+
+const PaymentCard = ({ plan }) => {
+  const navigate = useNavigate();
+  async function handleSubmit(amount) {
+    try {
+      let auth = localStorage.getItem("token");
+      if (!auth) {
+        navigate("/login");
+      } else {
+        const responsekey = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}/api/getkey`
+        );
+        const response = await axios.post(
+          `${import.meta.env.VITE_BASE_URL}/api/checkout`,
+          { amount }
+        );
+        // console.log(responsekey.data.key);
+        console.log(response.data.order);
+        const options = {
+          key: responsekey.data.key,
+          amount: response.data.order.amount,
+          currency: "INR",
+          name: "The Elite International",
+          description: "tutorials",
+          order_id: response.data.order.id,
+          // callback_url: `${import.meta.env.VITE_BASE_URL}/api/paymentVerification`,
+          handler: async function (res) {
+            const {
+              razorpay_payment_id,
+              razorpay_order_id,
+              razorpay_signature,
+            } = res;
+            const data = {
+              razorpay_payment_id,
+              razorpay_order_id,
+              razorpay_signature,
+            };
+            console.log(data);
+            const response = await axios.post(
+              `http://localhost:5001/api/paymentVerification`,
+              data
+            );
+            console.log(response.data);
+            if (response.data.success) {
+              navigate("/");
+            }
+          },
+          prefill: {
+            name: "priyanshu",
+            email: "priyanshu4443@gmail.com",
+            contact: "8770479210",
+          },
+          theme: {
+            color: "blue",
+          },
+        };
+        const razor = new window.Razorpay(options);
+        razor.open();
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+  return (
+    <div className="w-full max-w-[22rem] p-8 bg-gradient-to-r from-gray-600 to-gray-400 rounded-xl shadow-lg">
+      <div className="m-0 mb-8 rounded-none border-b border-white/10 pb-8 text-center">
+        <p className="font-normal uppercase text-white">{plan.name}</p>
+        <h1 className="mt-6 flex justify-center gap-1 text-5xl font-normal text-white">
+          <span className="mt-2 text-xl">₹</span>
+          {plan.price} <span className="self-end text-xl">/month</span>
+        </h1>
+      </div>
+      <div className="p-0">
+        <ul className="flex flex-col gap-4 text-white">
+          <li className="flex items-center gap-4">
+            <CiCircleCheck size={"30px"} />
+            <p className="font-normal">{plan.teleSupport} Telegram Subscription</p>
+          </li>
+          <li className="flex items-center gap-4">
+            <CiCircleCheck size={"30px"} />
+            <p className="font-normal">Call Support</p>
+          </li>
+          <li className="flex items-center gap-4">
+            <CiCircleCheck size={"30px"} />
+            <p className="font-normal">Daily Analysis Report</p>
+          </li>
+        </ul>
+      </div>
+      <div className="mt-12 p-0 flex justify-center items-center">
+        <button
+          className="hover:scale-[1.02] focus:scale-[1.02] active:scale-100 text-white bg-slate-900 py-2 px-5 rounded-lg"
+          onClick={() => {
+            handleSubmit(plan.price);
+          }}
+        >
+          Buy Now
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default PaymentCard;
