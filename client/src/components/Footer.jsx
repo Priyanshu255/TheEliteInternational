@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
+import { FaFacebook, FaInstagram, FaLinkedin, FaTelegram  } from "react-icons/fa";
 
 const LINKS = [
   {
@@ -9,7 +8,9 @@ const LINKS = [
   },
   {
     title: "Company",
-    items: ["About us", "Careers", "Press", "News"],
+    // items: ["About us", "Careers", "Press", "News"],
+    items: ["About us", "Careers"],
+
   },
   {
     title: "Resource",
@@ -57,18 +58,18 @@ const Footer = () => {
             Rights Reserved.
           </p>
           <div className="flex gap-4 text-blue-gray-900 sm:justify-center">
-            <div as="a" href="#" className="opacity-80 transition-opacity hover:opacity-100">
+            <a href="#" className="opacity-80 transition-opacity hover:opacity-100">
             <FaFacebook />
-            </div>
-            <div as="a" href="#" className="opacity-80 transition-opacity hover:opacity-100">
+            </a>
+            <a href="https://www.instagram.com/theeliteinternational?igsh=MXNqcGR6ZTY0cWpwcg==" target="blank" className="opacity-80 transition-opacity hover:opacity-100">
               <FaInstagram />
-            </div>
-            <div as="a" href="#" className="opacity-80 transition-opacity hover:opacity-100">
-              <FaXTwitter />
-            </div>
-            <div as="a" href="#" className="opacity-80 transition-opacity hover:opacity-100">
+            </a>
+            <a href="https://t.me/+bvlbKzq7CHxmZDE1" target="blank" className="opacity-80 transition-opacity hover:opacity-100">
+              <FaTelegram />
+            </a>
+            {/* <a href="#" className="opacity-80 transition-opacity hover:opacity-100">
               <FaLinkedin />
-            </div>
+            </a> */}
           </div>
         </div>
       </div>

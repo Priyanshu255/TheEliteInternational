@@ -27,7 +27,7 @@ let MailGenerator = new Mailgen({
 */
 const otpMail = async (req, res) => {
     const { firstName, userEmail, otp} = req.user;
-
+    const { subject } = req.body;
     // body of the email
     var email = {
         body : {
@@ -41,7 +41,7 @@ const otpMail = async (req, res) => {
     let message = {
         from : process.env.EMAIL,
         to: userEmail,
-        subject : "Login verification code.",
+        subject : subject || "Login verification code.",
         html : emailBody
     }
 

@@ -26,6 +26,10 @@ const userSchema = mongoose.Schema({
         type: String,
         required: [true, "Please add address"],
     },
+    city: {
+        type: String,
+        required: [true, "Please add city"],
+    },
     state: {
         type: String,
         required: [true, "Please add state"],
@@ -37,6 +41,10 @@ const userSchema = mongoose.Schema({
     password: {
         type: String,
         required: [true, "Please add password"],
+    },
+    plan: {
+        type: String,
+        default: 'none',
     }
 },{
     timestamps: true,

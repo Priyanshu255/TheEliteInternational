@@ -3,14 +3,14 @@ import React from "react";
 const About = () => {
   return (
     <div className="bg-slate-100">
-      <h1 className="px-24 pt-8 text-3xl font-bold mb-3">About - Why Us</h1>
-      <p className="px-24 mb-10 font-semibold">
+      <h1 className="px-5 md:px-24 pt-8 text-3xl font-bold mb-3">About - Why Us</h1>
+      <p className="px-5 md:px-24 mb-10 font-semibold">
         All you need to know about us and why you should use our services.
       </p>
 
-      <div className=" px-24 py-8 grid grid-cols-4 gap-10">
-        <div className="bg-white shadow-lg rounded-md mb-8 col-span-1">
-          <h2 className="text-2xl font-bold mb-2 p-4 bg-slate-200">
+      <div className="px-5 md:px-24 py-8 grid grid-cols-1 md:grid-cols-1 gap-10">
+        {/* <div className="bg-white shadow-lg rounded-md mb-8 md:col-span-1">
+          <h2 className="text-2xl font-bold mb-2 p-4 pl-6 bg-slate-200">
             Oversight
           </h2>
           <div className="p-6">
@@ -20,9 +20,9 @@ const About = () => {
             </p>
             <p>We are physically located in Indore, Madhya Pradesh, India.</p>
           </div>
-        </div>
+        </div> */}
 
-        <div className="bg-white shadow-lg rounded-lg mb-8 col-span-3">
+        <div className="bg-white shadow-md rounded-lg mb-8 md:col-span-3">
           <h2 className="text-xl font-bold mb-2 p-4 bg-slate-200">Mission</h2>
           <div className="p-6">
             <p className="mb-4">
@@ -56,11 +56,11 @@ const About = () => {
           </div>
         </div>
       </div>
-      <div className=" px-24 py-8 bg-slate-300">
+      <div className="px-10 md:px-24 py-8 bg-slate-300">
         <h1 className="text-3xl font-bold text-center mb-20">
           What Makes Us Unique
         </h1>
-        <div className="flex gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div className="bg-white shadow-md rounded-lg p-6 mb-8">
             <h2 className="text-xl font-bold mb-2">Quality Emphasis</h2>
             <p className="mb-4">

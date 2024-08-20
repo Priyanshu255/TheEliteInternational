@@ -2,6 +2,7 @@ import axios from "axios";
 import React from "react";
 import { CiCircleCheck } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 // I have a minor project for my collage, it is a mern application which has jwt authentication, email otp verification and razorpay integration for payments. It has two actors users and admins. About the website- it is a forex trading insight giving website, which is based on subscription model, once the user purchase the subscription then it will be added to a telegram group for the given period of time.
 
@@ -9,10 +10,16 @@ const PaymentCard = ({ plan }) => {
   const navigate = useNavigate();
   async function handleSubmit(amount) {
     try {
-      let auth = localStorage.getItem("token");
-      if (!auth) {
+      let token = localStorage.getItem("token");
+      if (!token) {
         navigate("/login");
       } else {
+        const data = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/user/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("data", data)
         const responsekey = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/api/getkey`
         );
@@ -27,7 +34,7 @@ const PaymentCard = ({ plan }) => {
           amount: response.data.order.amount,
           currency: "INR",
           name: "The Elite International",
-          description: "tutorials",
+          description: "Tutorials",
           order_id: response.data.order.id,
           // callback_url: `${import.meta.env.VITE_BASE_URL}/api/paymentVerification`,
           handler: async function (res) {
@@ -43,18 +50,29 @@ const PaymentCard = ({ plan }) => {
             };
             console.log(data);
             const response = await axios.post(
-              `http://localhost:5001/api/paymentVerification`,
+              `${import.meta.env.VITE_BASE_URL}/api/paymentVerification`,
               data
             );
             console.log(response.data);
             if (response.data.success) {
+              const plan = {
+                plan : `${amount}`
+              }
+              const response = await axios.put(
+                `${import.meta.env.VITE_BASE_URL}/api/updatePlan`,plan,{
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
+              toast.success(response.data?.msg);
               navigate("/");
             }
           },
           prefill: {
-            name: "priyanshu",
-            email: "priyanshu4443@gmail.com",
-            contact: "8770479210",
+            name: data.data.firstName,
+            email: data.data.email,
+            contact: data.data.phoneNumber,
           },
           theme: {
             color: "blue",
@@ -65,6 +83,8 @@ const PaymentCard = ({ plan }) => {
       }
     } catch (error) {
       console.error("Error:", error);
+      toast.error("Unauthorized! Please Login Again.");
+      navigate("/login");
     }
   }
   return (

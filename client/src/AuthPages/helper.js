@@ -1,5 +1,5 @@
 import axios from 'axios';
-import jwt_decode from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 
 axios.defaults.baseURL = process.env.VITE_SERVER_DOMAIN;
 
@@ -32,7 +32,7 @@ export async function verifyOTP({ email, code }){
 export async function getUsername(){
     const token = localStorage.getItem('token')
     if(!token) return Promise.reject("Cannot find Token");
-    let decode = jwt_decode(token)
+    let decode = jwtDecode(token)
     return decode;
 }
 

@@ -10,7 +10,9 @@ import Login from "./AuthPages/Login";
 import Register from "./AuthPages/Register";
 import OTPpage from "./AuthPages/OTPpage";
 import Protected from "./components/Protected";
-import PaymentSuccessful from "./pages/PaymentSuccessful";
+import Profile from "./pages/Profile";
+import ForgotPassward from "./AuthPages/ForgotPassward";
+import ResetPassword from "./AuthPages/ResetPassword";
 
 function App() {
   return (
@@ -20,10 +22,11 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          {/* <Route path="/pricing" element={<Protected Component={Pricing} />} /> */}
+          <Route path="/profile" element={<Protected Component={Profile} />} />
           <Route path="/pricing" element={<Pricing />} />
         </Route>
-        <Route path="/paymentSuccessful" element={<PaymentSuccessful />} />
+        <Route path="/forgotpassward" element={<ForgotPassward />} />
+        <Route path="/resetPassword" element={<ResetPassword />} />
         <Route path="/login" element={<Login />} />
         <Route path="/verifyotp" element={<OTPpage />} />
         <Route path="/register" element={<Register />} />

@@ -19,7 +19,7 @@ async function verifyUser(req, res, next){
 //post: /api/register
 const register = async (req, res) => {
     try{
-        const {firstName, lastName, email, countryCode, phoneNumber, address, state, country, password} = req.body;
+        const {firstName, lastName, email, countryCode, phoneNumber, address, city, state, country, password} = req.body;
 
         //checck existing user
         const existEmail = new Promise((resolve, reject) => {
@@ -42,6 +42,7 @@ const register = async (req, res) => {
                         countryCode,
                         phoneNumber,
                         address,
+                        city,
                         state,
                         country
                     });
@@ -86,12 +87,13 @@ const login = async (req, res, next) => {
                 //     firstName: user.firstName,
                 //     // token
                 // })
-                req.user = {
-                    id: user._id,
-                    email: user.email,
-                    firstName: user.firstName,
-                }
-                next();
+                // req.user = {
+                //     id: user._id,
+                //     email: user.email,
+                //     firstName: user.firstName,
+                // }
+                // next();
+                return res.status(201).send({msg: 'ok'});
             })
             .catch(e => {
                 return res.status(400).send({msg : 'Password does not Match'})
@@ -155,6 +157,33 @@ const updateUser = async (req, res) => {
     }
 }
 
+// put: /api/updatePlan
+const updatePlan = async (req, res) => {
+    try {
+        // const id = req.query.id;
+        const { userId } = req.user;
+        console.log(userId);
+        if(userId){
+            const body = req.body;
+            // update the data
+            console.log(userId);
+            console.log(body);
+            userModel.updateOne({ _id : userId }, body)
+            .then(() => {
+                return res.status(201).send({ msg : "Added Plan To Your Account...!"});
+            })
+            .catch(e => {
+                return res.status(400).send({ msg : 'Can not find user'})
+            })
+        }else{
+            return res.status(401).send({ msg : "User Not Found...!"});
+        }
+
+    } catch (error) {
+        return res.status(401).send({ error });
+    }
+}
+
 // put: /api/resetPassword
 const resetPassword = async (req, res) => {
     try {
@@ -167,8 +196,8 @@ const resetPassword = async (req, res) => {
                         .then(hashedPassword => {
                             userModel.updateOne({ email : user.email }, { password: hashedPassword})
                             .then(() => {
-                                req.app.locals.resetSession = false; // reset session
-                                return res.status(201).send({ msg : "Record Updated...!"})
+                                // req.app.locals.resetSession = false; // reset session
+                                return res.status(201).send({ msg : "Password Updated...!"})
                             })
                             .catch( e => {
                                 return res.status(500).send({
@@ -195,7 +224,7 @@ const resetPassword = async (req, res) => {
     }
 }
 
-module.exports = {register, login, verifyUser, getUser, updateUser, resetPassword};
+module.exports = {register, login, verifyUser, getUser, updateUser, updatePlan, resetPassword};
 
 
 // // get: /api/generateOTP

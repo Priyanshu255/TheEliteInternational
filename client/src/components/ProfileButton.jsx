@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { MdAccountCircle } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const ProfileButton = () => {
   //   return (
@@ -77,7 +78,7 @@ const ProfileButton = () => {
 
   return (
     <div className="relative inline-block text-left">
-      <div className="p-2 rounded-md shadow-md cursor-pointer">
+      <div className="p-2 rounded-full shadow-md cursor-pointer">
         <button
           type="button"
           className="flex items-center focus:outline-none"
@@ -88,7 +89,7 @@ const ProfileButton = () => {
             // src="https://via.placeholder.com/150" // Placeholder image URL, replace with your avatar image URL
             // alt="Avatar"
           />
-          <RiArrowDropDownLine className="h-7 w-7 text-gray-500" />
+          {/* <RiArrowDropDownLine className="h-7 w-7 text-gray-500" /> */}
         </button>
       </div>
       {isOpen && (
@@ -99,18 +100,20 @@ const ProfileButton = () => {
             aria-orientation="vertical"
             aria-labelledby="options-menu"
           >
-            <button
+            <Link
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
               role="menuitem"
+              to='/profile'
+              onClick={() => setIsOpen(false)}
             >
               Profile
-            </button>
-            <button
+            </Link>
+            {/* <button
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
               role="menuitem"
             >
               Settings
-            </button>
+            </button> */}
             <button
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
               role="menuitem"

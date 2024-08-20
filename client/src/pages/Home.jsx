@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "../assets/4085219.jpg";
 import { NavLink } from "react-router-dom";
+import { benifits } from "./data";
 
 const Card = ({ title, content, buttonLabel }) => {
   return (
@@ -19,11 +20,22 @@ const Card = ({ title, content, buttonLabel }) => {
   );
 };
 
+const BenefitCard = ({ title, content }) => {
+  return (
+    <div className="bg-white shadow-lg m-auto rounded-xl text-center max-w-full min-h-full">
+      <h2 className="text-xl font-bold mb-2 p-3 rounded-t-xl border-b-2 border-slate-300">{title}</h2>
+      <div className="p-5">
+        <p className="mb-2">{content}</p>
+      </div>
+    </div>
+  );
+};
+
 const Home = () => {
   return (
     <div className="  ">
-      <div className="px-24 py-8 bg-slate-100">
-        <div className="flex flex-row gap-10 my-20">
+      <div className="bg-slate-100">
+        <div className="flex flex-row gap-10 py-20 px-5 md:px-24">
           <section className="mb-8 mx-auto flex flex-col justify-center ">
             <h2 className="text-2xl font-bold mb-4 max-w-4xl">
               Professional, institutional-grade, high-quality, accurate,
@@ -40,17 +52,17 @@ const Home = () => {
           <img
             src={Image}
             alt="Trading Image"
-            className=" w-[30%] rounded-2xl shadow-lg"
+            className=" w-[30%] rounded-2xl shadow-lg hidden lg:block"
           />
         </div>
-        <div className="flex flex-col justify-center items-center py-20">
+        <div className="flex flex-col justify-center items-center py-20 px-5 md:px-24">
           <h1 className="text-4xl  mb-4">Get started</h1>
           <h3 className="font-semibold text-center max-w-2xl">
             Whether you are an experienced or newbie trader, learn about us and
             why you should use our trading signals.
           </h3>
         </div>
-        <div className="grid grid-cols-2 gap-20 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-20 mb-20 px-5 md:px-24">
           <Card
             title="About – Why The Elite International"
             content="There are several signal providers out there. Learn what makes us unique among them and why you should trade with us. We are certain to be the top signals provider on the market – learn here why."
@@ -61,8 +73,7 @@ const Home = () => {
             content="Learn about the advantages of trading Forex as a global speculative financial vehicle and why you should be a part of this market."
             buttonLabel="Read More"
           />
-
-          <Card
+          {/* <Card
             title="Trading Guidelines"
             content="Study our general trading recommendations, guidelines & advice, applicable to all trading styles."
             buttonLabel="Read the Guidelines"
@@ -72,10 +83,23 @@ const Home = () => {
             title="Trader's Mindset"
             content="Learn how and why a trader needs to think differently in order to become a successful professional."
             buttonLabel="Read the Trader's Mindset"
-          />
+          /> */}
+      </div>
+      <div className="px-5 md:px-24 py-8 bg-slate-300">
+        <div className="flex flex-col justify-center items-center py-20 bg-slate-300">
+          <h1 className="text-4xl text-center mb-4">Benefits of our Signals</h1>
+          <h3 className="font-semibold text-center max-w-2xl">
+            Reasons of why you should use our signals and how we differ from our competitors.
+          </h3>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-20">
+          {benifits.map((item, index) => (
+            <BenefitCard title={item.h} content={item.p} key={index} />
+          ))}
         </div>
       </div>
-      <div className="px-24 py-8 bg-slate-300">
+      </div>
+      {/* <div className="px-5 md:px-24 py-8 bg-slate-300">
         <div className="flex flex-col justify-center items-center py-20">
           <h1 className="text-4xl mb-4">Services</h1>
           <h3 className="font-semibold text-center max-w-3xl">
@@ -84,7 +108,7 @@ const Home = () => {
             trading/professional goals.
           </h3>
         </div>
-        <div className="grid grid-cols-2 gap-20 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-20 mb-20">
           <Card
             title="Trade Signals"
             content="Our flagship product. A subscription service for accessing daily trading signals. More than 50 instruments available to choose from and a variety of billing plans to cater to your individual needs and budget."
@@ -109,7 +133,7 @@ const Home = () => {
             buttonLabel="Join Financial Source"
           />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

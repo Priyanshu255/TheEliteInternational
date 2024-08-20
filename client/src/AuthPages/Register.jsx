@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import Img from "../assets/registerImg.jpg";
 import data from "../data/CountryCodes.json";
 import { toast } from "react-toastify";
@@ -6,9 +6,11 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import TextField from "../components/TextField";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Register = () => {
   const navigate = useNavigate();
+  const [submitting, setSubmitting] = useState(false);
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
   const validate = Yup.object({
@@ -22,6 +24,7 @@ const Register = () => {
       .matches(phoneRegExp, "Phone number is not valid"),
     countryCode: Yup.string().required("Required"),
     address: Yup.string().required("Required"),
+    city: Yup.string().required("Required"),
     state: Yup.string().required("Required"),
     country: Yup.string().required("Required"),
     password: Yup.string().required("Required"),
@@ -38,6 +41,7 @@ const Register = () => {
         phoneNumber: "",
         countryCode: "",
         address: "",
+        city: "",
         state: "",
         country: "",
         password: "",
@@ -45,45 +49,48 @@ const Register = () => {
       }}
       validationSchema={validate}
       onSubmit={async (values, formik) => {
-        console.log(values);
-        navigate("/");
-        try {
-          if (true) {
-            toast.success("I got your message!  ", {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
+        setSubmitting(true);
+        const data = {
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          phoneNumber: values.phoneNumber,
+          countryCode: values.countryCode,
+          address: values.address,
+          city: values.city,
+          state: values.state,
+          country: values.country,
+          password: values.password,
+        };
+        console.log(data);
+        try{
+          await axios
+            .post(`${import.meta.env.VITE_BASE_URL}/api/register`, data)
+            .then((response) => {
+              console.log("Response:", response.data);
+              localStorage.setItem("email", values.email);
+      
+              toast.success(response.data?.msg);
+              navigate("/");
+            }).then(async () => {
+              const emailData = {
+                firstName: values.firstName, 
+                userEmail: values.email
+              }
+              await axios.post(`${import.meta.env.VITE_BASE_URL}/api/registerMail`, emailData)
+            })
+            .catch((error) => {
+              console.error("Error:", error.response.data);
+              if (error.response.data.msg) {
+                toast.error(error.response.data.msg);
+              } else {
+                toast.error("Something went wrong");
+              }
             });
-            formik.resetForm();
-          } else {
-            toast.error("Something went wrong! Please try after sometime.", {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
-          }
-        } catch (error) {
-          console.log(error);
-          toast.error("Something went wrong! Please try after sometime.", {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
+        }catch(e){
+          toast.error("Something went wrong");
+        }finally {
+          setSubmitting(false); // Set submitting to false once the request is done
         }
       }}
     >
@@ -106,7 +113,7 @@ const Register = () => {
                 </div>
 
                 {/* <!-- Separator between social media sign in and email/password sign in --> */}
-                <div className="my-4 flex items-center border-t border-neutral-300">
+                <div className="my-2 flex items-center border-t border-neutral-300">
                   {/* <p className="mx-4 mb-0 text-center font-semibold dark:text-black">
                       Or
                     </p> */}
@@ -159,8 +166,11 @@ const Register = () => {
                       <TextField
                         name="address"
                         type="text"
-                        placeholder="House no./ Area"
+                        placeholder="House no./ Area and City"
                       />
+                    </div>
+                    <div className="col-span-2">
+                      <TextField name="city" type="text" placeholder="City" />
                     </div>
                     <div className="col-span-2">
                       <TextField name="state" type="text" placeholder="State" />
@@ -186,13 +196,22 @@ const Register = () => {
                 </div>
 
                 {/* <!-- Register button --> */}
-                <div className="text-center lg:text-left">
-                  <button
+                <div className="text-center lg:text-left mt-5">
+                  {/* <button
                     type="submit"
                     // className="inline-block rounded my-7 px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
                     className="my-7 text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-14 py-2.5 text-center me-2 mb-2 "
                   >
                     Register
+                  </button> */}
+                  <button
+                    type="submit"
+                    disabled={submitting} // Disable button if form is submitting
+                    className={`text-white bg-gradient-to-r from-black to-gray-800 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-md dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-14 py-2.5 text-center me-2 mb-2 ${
+                      submitting ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
+                  >
+                    {submitting ? 'Submitting...' : 'Register'}
                   </button>
 
                   {/* <!-- Register link --> */}

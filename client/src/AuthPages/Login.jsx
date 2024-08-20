@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { Formik, Form, Field } from "formik";
@@ -8,20 +8,34 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [submitting, setSubmitting] = useState(false);
   const handleSubmit = async (values) => {
+    setSubmitting(true);
     const data = {
       email: values.email,
       password: values.password,
     };
     console.log(data);
-    await axios
+    try{
+      await axios
       .post(`${import.meta.env.VITE_BASE_URL}/api/login`, data)
       .then((response) => {
         console.log("Response:", response.data);
         localStorage.setItem("email", values.email);
-
-        toast.success(response.data?.msg);
-        navigate("/verifyotp");
+        // toast.success(response.data?.msg);
+        // navigate("/verifyotp");
+      }).then(async()=> {
+        const otpDtata = {
+          email: values.email
+        }
+        await axios
+          .post(`${import.meta.env.VITE_BASE_URL}/api/generateOTP`, otpDtata)
+          .then((response) => {
+            console.log("Response:", response.data);
+            // localStorage.setItem("email", values.email);
+            toast.success(response.data?.msg);
+            navigate("/verifyotp");
+          })
       })
       .catch((error) => {
         console.error("Error:", error.response.data);
@@ -31,20 +45,25 @@ const Login = () => {
           toast.error("Something went wrong");
         }
       });
-  };
+    }catch(e){
+      toast.error("Something went wrong");
+    }finally {
+      setSubmitting(false); // Set submitting to false once the request is done
+    }
+  }
   const validate = Yup.object({
     email: Yup.string().email("Email is invalid").required("Required"),
     password: Yup.string().required("Required"),
     // email: Yup.string().email("Email is invalid"),
     // password: Yup.string(),
-    remember: Yup.boolean(),
+    // remember: Yup.boolean(),
   });
   return (
     <Formik
       initialValues={{
         email: "",
         password: "",
-        remember: false,
+        // remember: false,
       }}
       validationSchema={validate}
       onSubmit={async (values, formik) => {
@@ -53,7 +72,7 @@ const Login = () => {
         formik.resetForm();
       }}
     >
-      {(formik) => (
+      {() => (
         <Form className="h-screen">
           <div className="h-full">
             <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
@@ -67,7 +86,7 @@ const Login = () => {
               </div>
 
               {/* <!-- Right column container --> */}
-              <div className="mb-12 md:mr-8 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12">
+              <div className="mb-12 md:mr-8 md:mb-0 w-[80%] md:w-8/12 lg:w-5/12 xl:w-5/12">
                 {/* <!--Sign in section--> */}
                 <div className="flex flex-row items-center justify-center lg:justify-start">
                   <p className="mb-0 mr-4 text-2xl font-bold">Sign In</p>
@@ -90,7 +109,7 @@ const Login = () => {
 
                 <div className="mb-6 mt-4 flex items-center justify-between gap-9">
                   {/* <!-- Remember me checkbox --> */}
-                  <div className=" block min-h-[1.5rem]">
+                  {/* <div className=" block min-h-[1.5rem]">
                     <Field
                       className="mr-1 rounded-[0.25rem] border-[0.125rem] border-solid border-neutral-300 outline-none"
                       type="checkbox"
@@ -103,20 +122,29 @@ const Login = () => {
                     >
                       Remember me
                     </label>
-                  </div>
+                  </div> */}
 
                   {/* <!--Forgot password link--> */}
-                  <Link className="text-blue-900">Forgot password?</Link>
+                  <Link to="/forgotpassward" className="text-blue-900">Forgot password?</Link>
                 </div>
 
                 {/* <!-- Login button --> */}
                 <div className="text-center lg:text-left">
-                  <button
+                  {/* <button
                     type="submit"
                     // className="inline-block rounded px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
                     className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-14 py-2.5 text-center me-2 mb-2 "
                   >
                     Login
+                  </button> */}
+                  <button
+                    type="submit"
+                    disabled={submitting} // Disable button if form is submitting
+                    className={`text-white bg-gradient-to-r from-black to-gray-800  hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-md shadow-blue-500/50 dark:shadow-md dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-14 py-2.5 text-center me-2 mb-2 ${
+                      submitting ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
+                  >
+                    {submitting ? 'Logging in...' : 'Login'}
                   </button>
 
                   {/* <!-- Register link --> */}

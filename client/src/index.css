@@ -17,9 +17,9 @@
   }
 
 .active {
-    color: gray;
+    color: rgb(3, 14, 227);
 }
 
 .footer{
-    box-shadow: -2px -2px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: -2px -2px 10px rgba(0, 0, 0, 0.2);
 }

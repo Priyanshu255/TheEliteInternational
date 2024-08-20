@@ -24,7 +24,7 @@ const Pricing = () => {
   ];
 
   return (
-    <div className="px-24 pb-10 text-center bg-gray-200">
+    <div className="px-5 md:px-24 pb-10 text-center bg-gray-200">
       <div className="flex flex-col justify-center items-center">
       <h1 className="py-10 text-3xl font-bold">Plans & Pricing</h1>
       <h3 className="mb-4 font-semibold max-w-3xl">
@@ -33,11 +33,11 @@ const Pricing = () => {
       </h3>
 
       <h3 className="mb-10 font-semibold max-w-3xl">
-        Choose a billing plan that suits you and start your <b>Free 7 Day Trial </b>
-         now. You can cancel anytime or upgrade your plan.
+        Choose a billing plan that suits you and start your <b>7 Day Trial </b>
+         now. You can cancel or upgrade your plan in Trial period.
       </h3>
       </div>
-      <div className="flex justify-center items-center py-10 gap-10">
+      <div className="flex flex-col md:flex-row justify-center items-center py-10 gap-10">
       {plans.map((plan) => (
         <PaymentCard key={plan.id} plan={plan} />
       ))}

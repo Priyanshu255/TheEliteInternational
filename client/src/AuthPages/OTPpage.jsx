@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { Formik, Form, Field } from "formik";
@@ -8,33 +8,74 @@ import TextField from "../components/TextField";
 
 const OTPpage = () => {
   const navigate = useNavigate();
+  const [submitting, setSubmitting] = useState(false);
+  const [resendDisabled, setResendDisabled] = useState(true);
+  const [timer, setTimer] = useState(150);
+
+  useEffect(() => {
+    let interval;
+    if (resendDisabled && timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+    } else if (timer === 0) {
+      setResendDisabled(false);
+    }
+    return () => clearInterval(interval);
+  }, [resendDisabled, timer]);
   //   const email = localStorage.getItem('email');
   //   console.log(email);
+  const regenerateOTP = async () => {
+    const data = {
+      email: localStorage.getItem("email"),
+    };
+    try{
+      await axios
+          .post(`${import.meta.env.VITE_BASE_URL}/api/generateOTP`, data)
+          .then((response) => {
+            console.log("Response:", response.data);
+            toast.success(response.data?.msg);
+          }).catch((error) => {
+            console.error("Error:", error.response.data);
+            if (error.response.data.msg) {
+              toast.error(error.response.data.msg);
+            } else {
+              toast.error("Something went wrong");
+            }
+          });
+    }catch(e){
+      toast.error("Unable to sent OTP again");
+    }
+    
+  }
   const handleSubmit = async (values) => {
+    setSubmitting(true);
     const data = {
       email: localStorage.getItem("email"),
       code: values.otp.toString(),
     };
-    // console.log(data);
-    // useEffect(async () => {
-    // .post("http://localhost:5001/api/verifyOTP", data)
-    await axios
-      .post(`${import.meta.env.VITE_BASE_URL}/api/verifyOTP`, data)
-      .then((response) => {
-        console.log("Response:", response.data);
-        localStorage.setItem("token", response.data.token);
-        toast.success(response.data?.msg);
-        navigate('/');
-      })
-      .catch((error) => {
-        console.error("Error:", error.response.data);
-        if (error.response.data.msg) {
-          toast.error(error.response.data.msg);
-        } else {
-          toast.error("Something went wrong");
-        }
-      });
-    // }, []);
+    try{
+      await axios
+        .post(`${import.meta.env.VITE_BASE_URL}/api/verifyOTP`, data)
+        .then((response) => {
+          console.log("Response:", response.data);
+          localStorage.setItem("token", response.data.token);
+          toast.success(response.data?.msg);
+          navigate('/');
+        })
+        .catch((error) => {
+          console.error("Error:", error.response.data);
+          if (error.response.data.msg) {
+            toast.error(error.response.data.msg);
+          } else {
+            toast.error("Something went wrong");
+          }
+        })
+    }catch(e){
+      toast.error("Something went wrong");
+    }finally {
+      setSubmitting(false); // Set submitting to false once the request is done
+    }
   };
   const validate = Yup.object({
     otp: Yup.number().required("Required"),
@@ -79,26 +120,48 @@ const OTPpage = () => {
                     </div>
                   </div>
 
-                  <div className="flex flex-col space-y-5">
+                  <div className="flex flex-col justify-center items-center space-y-5">
                     <div>
-                      <button
+                      {/* <button
                         type="submit"
                         className="flex flex-row items-center justify-center text-center w-full border rounded-xl outline-none py-5 bg-blue-700 border-none text-white text-sm shadow-sm"
                       >
                         Verify Account
+                      </button> */}
+                      <button
+                        type="submit"
+                        disabled={submitting} // Disable button if form is submitting
+                        className={`text-white bg-gradient-to-r from-black to-gray-800 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-md shadow-blue-500/50 dark:shadow-md dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-14 py-2.5 text-center me-2 mb-2 ${
+                        submitting ? 'opacity-50 cursor-not-allowed' : ''
+                        }`}
+                      >
+                        {submitting ? 'Verifying...' : 'Verify Account'}
                       </button>
                     </div>
 
                     <div className="flex flex-row items-center justify-center text-center text-sm font-medium space-x-1 text-gray-500">
                       <p>Didn't recieve code?</p>{" "}
-                      <a
+                      {/* <button
                         className="flex flex-row items-center text-blue-600"
-                        href="http://"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        onClick={regenerateOTP}
                       >
                         Resend
-                      </a>
+                      </button> */}
+                      <button
+                        className={`flex flex-row items-center text-blue-600 ${
+                          resendDisabled ? 'cursor-not-allowe text-blue-600/50' : ''
+                        }`}
+                        onClick={() => {
+                          !resendDisabled && regenerateOTP();
+                          setResendDisabled(true);
+                          setTimer(150);
+                        }}
+                        disabled={resendDisabled}
+                      >
+                        {resendDisabled
+                          ? `Resend in ${Math.floor(timer / 60)}:${String(timer % 60).padStart(2, '0')}`
+                          : 'Resend'}
+                      </button>
                     </div>
                   </div>
                 </div>
