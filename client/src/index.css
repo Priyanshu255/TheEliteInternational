@@ -17,9 +17,14 @@
   }
 
 .active {
-    color: rgb(3, 14, 227);
+    /* color: rgb(3, 14, 227); */
+    border-bottom: 2px solid black;
 }
 
 .footer{
     box-shadow: -2px -2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.bluring {
+  backdrop-filter: blur(4px);
 }

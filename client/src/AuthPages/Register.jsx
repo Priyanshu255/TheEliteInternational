@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Img from "../assets/registerImg.jpg";
+// import Img from "../assets/registerImg.jpg";
 import data from "../data/CountryCodes.json";
 import { toast } from "react-toastify";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import TextField from "../components/TextField";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Img from "../assets/theelite.png";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -104,7 +105,7 @@ const Register = () => {
               </div>
 
               {/* <!-- Right column container --> */}
-              <div className="mb-12 md:mr-8 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12">
+              <div className="pt-12 md:mr-8 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12">
                 {/* <!--Sign in section--> */}
                 <div className="flex flex-row items-center justify-center lg:justify-start">
                   <p className="mb-0 mr-4 text-2xl font-bold">
@@ -215,7 +216,7 @@ const Register = () => {
                   </button>
 
                   {/* <!-- Register link --> */}
-                  <p className="mb-6 lg:mb-0 mt-2 pt-1 text-sm font-semibold">
+                  <p className="pb-12 lg:mb-0 mt-2 pt-1 text-sm font-semibold">
                     Already have an account?{"  "}
                     <Link
                       to="/login"

@@ -5,6 +5,7 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import TextField from "../components/TextField";
 import { Link, useNavigate } from "react-router-dom";
+import Image from "../assets/theelite.png";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -75,11 +76,13 @@ const Login = () => {
       {() => (
         <Form className="h-screen">
           <div className="h-full">
-            <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
+            <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-around">
               {/* <!-- Left column container with background--> */}
-              <div className="shrink-1 grow-0 basis-auto md:mb-0 md:w-9/12 md:shrink-0 lg:w-6/12 xl:w-6/12">
+              {/* <div className="shrink-1 grow-0 basis-auto md:mb-0 md:w-9/12 md:shrink-0 lg:w-4/12 xl:w-6/12"> */}
+              <div className="shrink-1 grow-0 basis-auto md:mb-0 md:shrink-0 w-[70%] md:w-[40%] flex justify-center items-center">
                 <img
-                  src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                  // src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                  src={Image}
                   className="w-full"
                   alt="Sample image"
                 />

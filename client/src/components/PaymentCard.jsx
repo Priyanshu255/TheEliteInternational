@@ -88,7 +88,7 @@ const PaymentCard = ({ plan }) => {
     }
   }
   return (
-    <div className="w-full max-w-[22rem] p-8 bg-gradient-to-r from-gray-600 to-gray-400 rounded-xl shadow-lg">
+    <div className="w-full  p-8 bg-gradient-to-r from-gray-600 to-gray-400 rounded-xl shadow-lg">
       <div className="m-0 mb-8 rounded-none border-b border-white/10 pb-8 text-center">
         <p className="font-normal uppercase text-white">{plan.name}</p>
         <h1 className="mt-6 flex justify-center gap-1 text-5xl font-normal text-white">
@@ -97,19 +97,17 @@ const PaymentCard = ({ plan }) => {
         </h1>
       </div>
       <div className="p-0">
-        <ul className="flex flex-col gap-4 text-white">
+        <ul className="grid grid-cols-1 md:grid-cols-1 items-center gap-4 text-white">
           <li className="flex items-center gap-4">
             <CiCircleCheck size={"30px"} />
-            <p className="font-normal">{plan.teleSupport} Telegram Subscription</p>
+            <p className="font-normal">{plan.trades}</p>
           </li>
-          <li className="flex items-center gap-4">
+          {plan?.data.map((item, index) => (
+            <li className="flex items-center gap-4" key={index}>
             <CiCircleCheck size={"30px"} />
-            <p className="font-normal">Call Support</p>
-          </li>
-          <li className="flex items-center gap-4">
-            <CiCircleCheck size={"30px"} />
-            <p className="font-normal">Daily Analysis Report</p>
-          </li>
+            <p className="font-normal text-start">{item}</p>
+            </li>
+          ))}
         </ul>
       </div>
       <div className="mt-12 p-0 flex justify-center items-center">

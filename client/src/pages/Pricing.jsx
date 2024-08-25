@@ -6,20 +6,26 @@ const Pricing = () => {
     {
       id: 1,
       name: "Basic Plan",
-      price: "500",
-      teleSupport: "1 month"
+      price: "3000",
+      trades: "3-4 trades per day",
+      data: ["In depth analysis: 1 symbol"],
+      // teleSupport: "1 month"
     },
     {
       id: 2,
       name: "Pro Plan",
-      price: "450",
-      teleSupport: "6 month"
+      price: "5000",
+      trades: "6-7 trades per day",
+      data: ["In depth analysis: traded signals", "US stock market trade + analysis", "Customer support", "Best broker provided", "Instant deposite & withdrawals"],
+      // teleSupport: "1 month"
     },
     {
       id: 3,
       name: "Premium Plan",
-      price: "350",
-      teleSupport: "1 year"
+      price: "7500",
+      trades: "8-10 trades per day",
+      data: ["All trades deep analysis", "weekly market analysis", "US stocks trades", "US stocks swing trades", "Crypto trade: popular symbols", "special deposit and withdrawal", "dedicated support team", "best broker support", "logic behind the trades"],
+      // teleSupport: "1 month"
     },
   ];
 
