@@ -3,6 +3,12 @@ const dotenv = require('dotenv').config();
 const cors = require("cors");
 const morgan = require("morgan");
 const connectdb = require("./database/connection.js");
+// Configure CORS options
+//const corsOptions = {
+//  origin: 'https://theeliteinternational.com', // Allow this origin
+//  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow these methods
+//  allowedHeaders: ['Authorization', 'Content-Type'], // Allow these headers
+//};
 
 const app = express();
 
@@ -11,6 +17,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 app.use(cors());
+//app.use(cors(corsOptions));
 app.use(morgan('tiny'));
 app.disable('x-powered-by'); //less hackers know about our stack
 
