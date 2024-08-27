@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "../assets/4085219.jpg";
+import Image from "../assets/4085219.webp";
 import { NavLink } from "react-router-dom";
 import { benifits } from "./data";
 
@@ -53,14 +53,15 @@ const Home = () => {
             src={Image}
             alt="Trading Image"
             className=" w-[30%] rounded-2xl shadow-lg hidden lg:block"
+            loading="lazy"
           />
         </div>
         <div className="flex flex-col justify-center items-center py-20 px-5 md:px-24">
           <h1 className="text-4xl  mb-4">Get started</h1>
-          <h3 className="font-semibold text-center max-w-2xl">
+          <h2 className="font-semibold text-center max-w-2xl">
             Whether you are an experienced or newbie trader, learn about us and
             why you should use our trading signals.
-          </h3>
+          </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-20 mb-20 px-5 md:px-24">
           <Card
@@ -88,9 +89,9 @@ const Home = () => {
       <div className="px-5 md:px-24 py-8 bg-slate-300">
         <div className="flex flex-col justify-center items-center py-20 bg-slate-300">
           <h1 className="text-4xl text-center mb-4">Benefits of our Signals</h1>
-          <h3 className="font-semibold text-center max-w-2xl">
+          <h2 className="font-semibold text-center max-w-2xl">
             Reasons of why you should use our signals and how we differ from our competitors.
-          </h3>
+          </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-20">
           {benifits.map((item, index) => (

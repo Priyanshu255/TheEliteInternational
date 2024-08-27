@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import TextField from "../components/TextField";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Img from "../assets/theelite.png";
+import Img from "../assets/theelite.webp";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -101,7 +101,7 @@ const Register = () => {
             <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
               {/* <!-- Left column container with background--> */}
               <div className="shrink-1 ml-6 grow-0 basis-auto md:mb-0 md:w-9/12 md:shrink-0 lg:w-6/12 xl:w-6/12">
-                <img src={Img} className=" w-11/12 " alt="Sample image" />
+                <img src={Img} className=" w-11/12 " alt="Sample image" loading="lazy"/>
               </div>
 
               {/* <!-- Right column container --> */}

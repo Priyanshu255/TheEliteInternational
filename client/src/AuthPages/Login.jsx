@@ -5,7 +5,7 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import TextField from "../components/TextField";
 import { Link, useNavigate } from "react-router-dom";
-import Image from "../assets/theelite.png";
+import Image from "../assets/theelite.webp";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -85,6 +85,7 @@ const Login = () => {
                   src={Image}
                   className="w-full"
                   alt="Sample image"
+                  loading="lazy"
                 />
               </div>
 
